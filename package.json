@@ -1,0 +1,16 @@
+{
+  "name": "mcp-deadcode-analyzer",
+  "version": "1.0.0",
+  "type": "module",
+  "scripts": {
+    "serve": "node src/server.js",
+    "smoke": "node src/smoke.js"
+  },
+  "dependencies": {
+    "@babel/generator": "^7.29.1",
+    "@babel/parser": "^7.29.0",
+    "@babel/traverse": "^7.29.0",
+    "fastify": "^5.7.4",
+    "fs-extra": "^11.3.3"
+  }
+}
