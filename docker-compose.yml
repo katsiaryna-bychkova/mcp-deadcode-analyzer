@@ -1,0 +1,31 @@
+version: '3.8'
+
+services:
+  analyzer:
+    build: .
+    ports:
+      - "8080:8000"
+    volumes:
+      - ./demo_project:/app/demo_project
+    profiles: ["analyzer"]
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+
+  remote:
+    build: .
+    ports:
+      - "8081:8000"
+    volumes:
+      - /path/to/your/project:/app/demo_project
+    profiles: ["remote"]
+    tty: true
+    stdin_open: true
+    restart: unless-stopped
+
+# Запуск
+
+docker-compose up analyzer                  # Локальный проект (demo_project)
+docker-compose --profile remote up remote   # Удаленный проект
+docker-compose up                           # Оба сервиса сразу
+docker-compose up -d analyzer               # Фоновый режим

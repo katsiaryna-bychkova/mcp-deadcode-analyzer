@@ -1,3 +1,9 @@
 node_modules
+npm-debug.log
 .git
-*.log
+.gitignore
+README.md
+.env
+dist
+coverage
+.nyc_output

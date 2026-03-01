@@ -2,15 +2,26 @@
   "name": "mcp-deadcode-analyzer",
   "version": "1.0.0",
   "type": "module",
+  "description": "Tree-shaking dead code analyzer",
+  "main": "server.js",
   "scripts": {
-    "serve": "node src/server.js",
-    "smoke": "node src/smoke.js"
+    "build": "docker build -t mcp-deadcode-analyzer .",
+    "start": "docker run -p 8000:8000 -v $(pwd)/demo_project:/app/demo_project mcp-deadcode-analyzer",
+    "health": "curl -s http://localhost:8000/health | jq",
+    "tools": "curl -X POST http://localhost:8000/mcp -H 'Content-Type: application/json' -d '{\"method\": \"tools/list\"}' | jq",
+    "dry-run": "curl -X POST http://localhost:8000/mcp -H 'Content-Type: application/json' -d '{\"method\": \"tools/call\", \"params\": {\"name\": \"full_cleanup\", \"dryRun\": true}}' | jq",
+    "cleanup": "curl -X POST http://localhost:8000/mcp -H 'Content-Type: application/json' -d '{\"method\": \"tools/call\", \"params\": {\"name\": \"full_cleanup\"}}' | jq",
+    "full": "npm run build && npm run start:dev",
+    "analyze": "npm run start:dev & sleep 3 && npm run dry-run:dev && read -p 'Запустить очистку? (y/N): ' confirm && [[ $confirm == [yY] ]] && npm run cleanup:dev",
+    "reset": "docker stop $(docker ps -q) 2>/dev/null && docker container prune -f",
+    "status": "docker ps --format 'table {{.Names}}\\t{{.Status}}\\t{{.Ports}}'"
   },
   "dependencies": {
-    "@babel/generator": "^7.29.1",
-    "@babel/parser": "^7.29.0",
-    "@babel/traverse": "^7.29.0",
-    "fastify": "^5.7.4",
-    "fs-extra": "^11.3.3"
+    "express": "^4.19.2",
+    "fs-extra": "^11.2.0"
+  },
+  "devDependencies": {
+    "nodemon": "^3.1.4",
+    "jq": "latest"
   }
 }
