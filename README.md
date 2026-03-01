@@ -13,16 +13,17 @@ git clone <repo>
 cd mcp-deadcode-analyzer
 
 npm install          # Установить
-npm run full         # Build + Start (порт 8080)
-npm run analyze      # Интерактивная очистка (Показывает что удалится → "Запустить очистку? (y/N)" → Y)
+npm run analyze:force   # Полная очистка (Первый раз, дает права)
+npm run analyze         # Все последующие разы
 
 ## Остальные команды
 
+npm run full         # Build + запуск сервера (8080)
 npm run health       # Health check
-npm run tools        # Список инструментов
+npm run start        # Запуск сервера
+npm run tools        # Список инструментов 
 npm run dry-run      # Показывает что удалится
 npm run cleanup      # Полная очистка
-npm run start        # Запуск сервера
 npm run reset        # Убить контейнеры
 npm run status       # Статус Docker
 

@@ -280,8 +280,17 @@ async function cleanupEmptyFolders(demoPath) {
   return removed;
 }
 
-// 🔥 ОСНОВНАЯ ФУНКЦИЯ TREE-SHAKING
+// 🔥 ОСНОВНАЯ ФУНКЦИЯ ОЧИСТКИ
 async function fullCleanup(targetPath = DEMO_PATH, dryRun = false) {
+  if (dryRun) {
+    return { 
+      success: true, 
+      stats: { imports: importsRemoved, functions: codeRemoved, exports: exportsRemoved, files: filesRemoved, folders: foldersRemoved },
+      dryRun, 
+      message: 'Ничего не удалено!' 
+    };
+  }
+
   console.log('🚀=== 🧹 ПОЛНЫЙ TREE-SHAKING ===');
   
   console.log('\n📦 PASS 1: Удаляем импорты...');
@@ -305,7 +314,7 @@ async function fullCleanup(targetPath = DEMO_PATH, dryRun = false) {
     success: true, 
     stats: { imports: importsRemoved, functions: codeRemoved, exports: exportsRemoved, files: filesRemoved, folders: foldersRemoved },
     dryRun,
-    message: '🎉 Tree-shaking завершен!' 
+    message: 'Очистка завершена!' 
   };
 }
 

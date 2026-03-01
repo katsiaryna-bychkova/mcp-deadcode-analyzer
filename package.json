@@ -2,26 +2,23 @@
   "name": "mcp-deadcode-analyzer",
   "version": "1.0.0",
   "type": "module",
-  "description": "Tree-shaking dead code analyzer",
-  "main": "server.js",
   "scripts": {
+    "start": "npm run reset && docker run -p 8080:8000 -v $(pwd)/demo_project:/app/demo_project mcp-deadcode-analyzer",
+    "health": "curl -s http://localhost:8080/health || echo 'Сервер не запущен (8080)'",
+    "tools": "curl -X POST http://localhost:8080/mcp -H 'Content-Type: application/json' -d '{\"method\":\"tools/list\"}' || echo 'Сервер не запущен (8080)'",
+    "dry-run": "curl -X POST http://localhost:8080/mcp -H 'Content-Type: application/json' -d '{\"method\":\"tools/call\",\"params\":{\"name\":\"full_cleanup\",\"dryRun\":true}}' || echo 'Сервер не запущен (8080)'",
+    "cleanup": "curl -X POST http://localhost:8080/mcp -H 'Content-Type: application/json' -d '{\"method\":\"tools/call\",\"params\":{\"name\":\"full_cleanup\"}}' || echo 'Сервер не запущен (8080)'",
+    "full": "npm run build && npm run start",
+
+    "analyze": "bash cleanup.sh",
+    "analyze:force": "chmod +x cleanup.sh && bash cleanup.sh",
+    "dev": "node server.js",
+    "reset": "docker stop $(docker ps -q 2>/dev/null || true) && docker rm $(docker ps -aq 2>/dev/null || true)",
     "build": "docker build -t mcp-deadcode-analyzer .",
-    "start": "docker run -p 8000:8000 -v $(pwd)/demo_project:/app/demo_project mcp-deadcode-analyzer",
-    "health": "curl -s http://localhost:8000/health | jq",
-    "tools": "curl -X POST http://localhost:8000/mcp -H 'Content-Type: application/json' -d '{\"method\": \"tools/list\"}' | jq",
-    "dry-run": "curl -X POST http://localhost:8000/mcp -H 'Content-Type: application/json' -d '{\"method\": \"tools/call\", \"params\": {\"name\": \"full_cleanup\", \"dryRun\": true}}' | jq",
-    "cleanup": "curl -X POST http://localhost:8000/mcp -H 'Content-Type: application/json' -d '{\"method\": \"tools/call\", \"params\": {\"name\": \"full_cleanup\"}}' | jq",
-    "full": "npm run build && npm run start:dev",
-    "analyze": "npm run start:dev & sleep 3 && npm run dry-run:dev && read -p 'Запустить очистку? (y/N): ' confirm && [[ $confirm == [yY] ]] && npm run cleanup:dev",
-    "reset": "docker stop $(docker ps -q) 2>/dev/null && docker container prune -f",
-    "status": "docker ps --format 'table {{.Names}}\\t{{.Status}}\\t{{.Ports}}'"
+    "status": "docker ps"
   },
   "dependencies": {
     "express": "^4.19.2",
     "fs-extra": "^11.2.0"
-  },
-  "devDependencies": {
-    "nodemon": "^3.1.4",
-    "jq": "latest"
   }
 }
