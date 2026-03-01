@@ -3,14 +3,13 @@ const command = process.argv[2];
 async function main() {
   switch (command) {
     case 'serve':
-        console.log('🚀 Запуск MCP сервера...');
-        const { app } = await import('./server.js');
-        app.listen(8000, () => {
-            console.log('✅ MCP сервер запущен: http://localhost:8000');
-            console.log('📋 Tools: cleanup_imports, full_cleanup');
-        });
-        process.stdin.resume();
-        break;
+      console.log('🚀 Запуск MCP сервера...');
+      await import('./server.js');  // server.js сам запустит app.listen(8000)
+      console.log('✅ Сервер запущен: http://localhost:8000');
+      
+      process.stdin.resume();
+      await new Promise(() => {});
+      break;
 
     case 'smoke':
       console.log('🧪 === SMOKE TEST ===');
@@ -21,10 +20,6 @@ async function main() {
       console.log('{"status": "PASSED", "tools": 2}');
       process.exit(0);
       break;
-
-    default:
-      console.error('❌ Используйте: serve | smoke');
-      process.exit(1);
   }
 }
 
