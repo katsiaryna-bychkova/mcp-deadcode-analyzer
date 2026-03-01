@@ -285,7 +285,7 @@ async function fullCleanup(targetPath = DEMO_PATH, dryRun = false) {
   if (dryRun) {
     return { 
       success: true, 
-      stats: { imports: importsRemoved, functions: codeRemoved, exports: exportsRemoved, files: filesRemoved, folders: foldersRemoved },
+      stats: { imports: 0, functions: 0, exports: 0, files: 0, folders: 0 },
       dryRun, 
       message: 'Ничего не удалено!' 
     };
@@ -377,6 +377,8 @@ app.post('/mcp', async (req, res) => {
 app.get('/smoke', (req, res) => {
   res.json({ status: 'PASSED', tools: 2 });
 });
+
+export { app, PORT };
 
 // 🔥 ЗАПУСК СЕРВЕРА
 app.listen(PORT, () => {

@@ -1,7 +1,11 @@
 FROM node:20-alpine
+
 WORKDIR /app
 COPY package.json .
 RUN npm install
 COPY . .
+
 EXPOSE 8000
-CMD ["node", "server.js"]
+
+ENTRYPOINT ["node", "entrypoint.js"]
+CMD ["serve"]

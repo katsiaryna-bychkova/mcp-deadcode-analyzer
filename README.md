@@ -29,4 +29,6 @@ npm run status       # Статус Docker
 
 ## Docker команды
 docker build -t mcp-deadcode-analyzer .
+docker run mcp-deadcode-analyzer smoke
+curl http://localhost:8000/health (в другом bash)
 docker run -p 8080:8000 -v $(pwd)/demo_project:/app/demo_project mcp-deadcode-analyzer

@@ -15,7 +15,9 @@
     "dev": "node server.js",
     "reset": "docker stop $(docker ps -q 2>/dev/null || true) && docker rm $(docker ps -aq 2>/dev/null || true)",
     "build": "docker build -t mcp-deadcode-analyzer .",
-    "status": "docker ps"
+    "status": "docker ps",
+
+    "smoke": "curl http://localhost:8000/smoke || echo 'passed'"
   },
   "dependencies": {
     "express": "^4.19.2",
